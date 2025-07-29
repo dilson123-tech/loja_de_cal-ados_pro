@@ -6,7 +6,7 @@ class ProdutoBase(BaseModel):
     nome: str
     descricao: Optional[str] = None
     preco: float
-    estoque: int
+    quantidade: int  # <- nome igual ao model
 
 class ProdutoCreate(ProdutoBase):
     pass
@@ -16,4 +16,7 @@ class ProdutoOut(ProdutoBase):
     criado_em: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class MensagemResponse(BaseModel):
+    mensagem: str
