@@ -10,18 +10,22 @@ def registrar_venda(db: Session, venda_data: VendaCreate):
     if not produto:
         raise HTTPException(status_code=404, detail="Produto não encontrado.")
     
-    if produto.quantidade < venda_data.quantidade_vendida:
+    if produto.quantidade < venda_data.quantidade:
         raise HTTPException(status_code=400, detail="Quantidade em estoque insuficiente.")
-
-    valor_total = produto.preco * venda_data.quantidade_vendida
+    
+    valor_total = produto.preco * venda_data.quantidade
 
     nova_venda = Venda(
         produto_id=venda_data.produto_id,
-        quantidade_vendida=venda_data.quantidade_vendida,
-        valor_total=valor_total
+        quantidade=venda_data.quantidade,
+        valor_total=valor_total,
+        cliente_nome=venda_data.cliente_nome,
+        cliente_cpf=venda_data.cliente_cpf,
+        cliente_endereco=venda_data.cliente_endereco,
+        forma_pagamento=venda_data.forma_pagamento,
     )
 
-    produto.quantidade -= venda_data.quantidade_vendida  # Atualiza o estoque
+    produto.quantidade -= venda_data.quantidade
 
     db.add(nova_venda)
     db.commit()

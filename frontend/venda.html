@@ -1,23 +1,104 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Venda em Andamento</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Vendas</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
-  <header>
-    <h1>🛒 Venda em Andamento</h1>
-  </header>
+  <h1>🧾 Painel de Vendas</h1>
+  <section id="carrinho-produtos">
+  <h2>🧺 Carrinho</h2>
+  <table id="lista-carrinho">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Preço</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Itens do carrinho serão inseridos aqui via JS -->
+    </tbody>
+  </table>
+</section>
 
-  <main>
-    <div id="carrinho-container"></div>
-    <p id="total">Total: R$ 0,00</p>
-    <button id="finalizar-venda">✅ Finalizar Venda</button>
-    <br><br>
-    <a href="index.html">⬅️ Voltar para Produtos</a>
-  </main>
 
-  <script src="js/venda.js"></script>
+  <section id="produtos-disponiveis">
+    <h2>🛒 Produtos</h2>
+
+    <!-- 🔍 Campo para buscar produto por código -->
+    <!-- 🔍 Campo para buscar produto por código ou nome -->
+<div id="busca-produto">
+  <label for="codigo-produto">ID:</label>
+  <input type="number" id="codigo-produto" placeholder="Ex: 1" />
+
+  <label for="nome-produto">ou Nome:</label>
+  <input type="text" id="nome-produto" placeholder="Ex: Tênis Nike" />
+
+ <button id="buscar-produto" type="button">Buscar</button>
+</div>
+
+<div id="resultado-produto"></div>
+
+    <br />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Preço</th>
+          <th>Adicionar</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-produtos">
+        <!-- Produtos serão inseridos via JS -->
+      </tbody>
+    </table>
+  </section>
+
+ 
+
+
+
+
+ <section id="resumo-venda">
+  <h2>💰 Resumo</h2>
+  <p><strong>Total:</strong> R$ <span id="total">0,00</span></p>
+
+  <label for="forma-pagamento">Forma de Pagamento:</label>
+  <select id="forma-pagamento">
+    <option value="Cartão de Crédito">Cartão de Crédito</option>
+    <option value="Cartão de Débito">Cartão de Débito</option>
+    <option value="PIX">PIX</option>
+  </select>
+
+  <div id="campos-pagamento"></div>
+
+  <div class="bandeiras-cartao">
+    <img src="/static/img/visa.png" alt="Visa" />
+    <img src="/static/img/mastercard.png" alt="Mastercard" />
+    <img src="/static/img/elo.png" alt="Elo" />
+  </div>
+
+  <!-- 🔥 ESSA PARTE É ESSENCIAL: tem que ficar AQUI! -->
+  <div id="dados-cliente">
+    <h2>👤 Cliente</h2>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required />
+
+    <label for="cpf">CPF:</label>
+    <input type="text" id="cpf" required />
+
+    <label for="endereco">Endereço:</label>
+    <input type="text" id="endereco" required />
+  </div>
+
+  <br /><br />
+  <button id="finalizar-venda" class="btn-verde">Finalizar Venda</button>
+</section>
+
+  <script src="/frontend/js/vendas.js"></script>
 </body>
 </html>

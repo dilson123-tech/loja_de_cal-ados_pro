@@ -1,0 +1,568 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+#produtos-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  justify-content: center;
+}
+
+.produto {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  margin: 10px;
+  padding: 15px;
+  width: 220px;
+  text-align: center;
+}
+
+.produto h2 {
+  font-size: 18px;
+}
+
+.produto p {
+  margin: 10px 0;
+}
+button {
+  padding: 10px;
+  margin-top: 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #218838;
+}
+.modal.hidden {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.fechar {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  width: 100%;
+  background-color: green;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* Painel de vendas */
+.container-vendas {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.container-vendas h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+}
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.venda-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.venda-form label {
+  font-weight: bold;
+}
+
+.venda-form input, .venda-form select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.venda-form button {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.venda-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Tabela de vendas */
+.tabela-vendas {
+  margin-top: 2rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-vendas th, .tabela-vendas td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.tabela-vendas th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+p strong + text {
+  font-family: monospace;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#historico-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#historico-container div {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#historico-container h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+#historico-container p {
+  margin: 5px 0;
+}
+
+a {
+  display: inline-block;
+  margin-top: 30px;
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+/* Animação suave ao aparecer os cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplica a animação a cada venda */
+#historico-container div {
+  animation: fadeInUp 0.5s ease-in-out;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efeito ao passar o mouse (hover) */
+#historico-container div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Link com ícone + efeito */
+a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #1d6fa5;
+  text-decoration: underline;
+}
+
+/* Responsividade leve */
+@media (max-width: 600px) {
+  #historico-container div {
+    width: 95%;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #historico-container h3 {
+    font-size: 1.1rem;
+  }
+
+  #historico-container p {
+    font-size: 0.95rem;
+  }
+}
+#bandeiras {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+#bandeiras label {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#bandeiras input {
+  display: none;
+}
+
+#bandeiras img {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+#bandeiras input:checked + img {
+  border: 2px solid #2ecc71; /* Verde sucesso */
+}
+.bandeiras-cartao {
+  display: flex;
+  gap: 1rem;
+  margin-top: 10px;
+}
+.bandeiras-cartao img {
+  width: 60px;
+  height: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+
+
+.bandeiras-cartao img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #343a40;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table th, table td {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  text-align: left;
+}
+
+input, select {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.bandeiras-cartao img {
+  width: 50px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+/* 🎨 Estilização da Tabela do Carrinho */
+#lista-carrinho {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#lista-carrinho th,
+#lista-carrinho td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+#lista-carrinho th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+#lista-carrinho input[type="number"] {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  text-align: center;
+}
+
+#lista-carrinho button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#lista-carrinho button:hover {
+  background-color: #cc0000;
+}
+.select-cartao {
+  padding: 10px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  background: url('/static/img/visa.png') no-repeat right center;
+  background-size: 30px;
+  padding-right: 40px;
+  transition: background-image 0.3s ease-in-out;
+}
+
+
+
+.select-cartao {
+  padding: 10px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  background: url('/static/img/visa.png') no-repeat right center;
+  background-size: 30px;
+  padding-right: 40px;
+  transition: background-image 0.3s ease-in-out;
+}
+
+.select-cartao option {
+  padding: 10px;
+}
+
+/* Troca a imagem dependendo da opção */
+.select-cartao:has(option[value="credito"]:checked) {
+  background-image: url('/static/img/visa.png');
+}
+.select-cartao:has(option[value="debito"]:checked) {
+  background-image: url('/static/img/mastercard.png');
+}
+.select-cartao:has(option[value="pix"]:checked) {
+  background-image: url('/static/img/pix.png');
+}
+/* === Seção de Pagamento === */
+#forma-pagamento {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 15px;
+}
+
+#campos-pagamento {
+  margin-top: 15px;
+}
+
+#campos-pagamento label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#campos-pagamento input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+#campos-pagamento img {
+  display: block;
+  margin-top: 10px;
+  max-width: 200px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+#campos-pagamento select {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+#campos-pagamento {
+  min-height: 100px;
+  padding: 10px;
+  background-color: #fefefe;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+#campos-pagamento label,
+#campos-pagamento input,
+#campos-pagamento select {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 300px;
+  font-size: 1rem;
+}
+/* 🧾 Seções com mais respiro */
+section {
+  margin-bottom: 40px;
+}
+
+/* 🟩 Botão de finalizar destaque */
+button#finalizar-compra {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button#finalizar-compra:hover {
+  background-color: #218838;
+}
+
+/* 💳 Campos do cartão formatados em bloco bonitão */
+#campos-pagamento {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 🧑‍💼 Campo nome capitalizado */
+#nome-cliente {
+  text-transform: capitalize;
+}
+
+/* 💰 Select com estilo */
+select,
+input[type="text"] {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+/* 💳 Label com destaque leve */
+#campos-pagamento label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}

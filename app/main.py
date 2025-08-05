@@ -15,13 +15,14 @@ app = FastAPI(
     description="API para gerenciamento de produtos da loja física",
     version="1.0.0"
 )
+app.include_router(produto_router, prefix="/api", tags=["Produtos"])
+app.include_router(venda_router, prefix="/api/vendas", tags=["Vendas"])
+
 
 @app.get("/")
 def read_root():
     return {"mensagem": "API da Loja de Calçados rodando com sucesso!"}
 
-app.include_router(produto_router, prefix="/api", tags=["Produtos"])
-app.include_router(venda_router, prefix="/api/vendas", tags=["Vendas"])
 
 
 
@@ -31,4 +32,21 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+from fastapi.staticfiles import StaticFiles
+import os
+
+# Serve os arquivos da pasta 'frontend'
+from pathlib import Path
+
+app.mount(
+    "/frontend",
+    StaticFiles(directory=Path(__file__).parent.parent / "frontend"),
+    name="frontend"
+)
+
+app.mount(
+    "/static",
+    StaticFiles(directory=Path(__file__).parent.parent / "frontend/static"),
+    name="static"
 )

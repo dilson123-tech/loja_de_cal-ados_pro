@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórico de Vendas</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <h1>📜 Histórico de Vendas</h1>
+
+  <input type="text" id="filtro-nome" placeholder="🔍 Filtrar por nome do cliente..." />
+
+  <table>
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>CPF</th>
+        <th>Produto</th>
+        <th>Preço</th>
+        <th>Forma</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody id="historico-container">
+      <!-- As vendas serão carregadas aqui -->
+    </tbody>
+  </table>
+
+  <script src="/frontend/js/historico.js"></script>
+</body>
+</html>

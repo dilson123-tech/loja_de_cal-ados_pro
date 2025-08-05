@@ -1,14 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Loja de Calçados</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel da Loja de Calçados</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+
+
 </head>
 <body>
-  <h1>📦 Produtos Cadastrados</h1>
-  <div id="produtos-container"></div>
+  <header>
+    <h1>Painel de Vendas - Loja de Calçados</h1>
+  </header>
 
-  <script src="js/app.js"></script>
+  <main>
+    <section class="produtos">
+      <h2>Produtos Disponíveis</h2>
+      <table id="tabela-produtos">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="venda">
+      <h2>Nova Venda</h2>
+      <form id="form-venda">
+        <input type="hidden" id="produto_id" />
+        <label>Quantidade:
+          <input type="number" id="quantidade" required />
+        </label>
+        <label>Nome do Cliente:
+          <input type="text" id="cliente_nome" required />
+        </label>
+        <label>CPF:
+          <input type="text" id="cliente_cpf" required />
+        </label>
+        <label>Endereço:
+          <input type="text" id="cliente_endereco" required />
+        </label>
+        <label>Forma de Pagamento:
+          <select id="forma_pagamento" required>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Pix">Pix</option>
+          </select>
+        </label>
+        <button type="submit">Finalizar Venda</button>
+      </form>
+    </section>
+
+    <section class="historico">
+      <h2>Histórico de Vendas</h2>
+      <div id="resumo-vendas"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

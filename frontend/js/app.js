@@ -1,42 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("produtos-container");
+  const modal = document.getElementById("modal-venda");
+  const fecharModal = document.getElementById("fechar-modal");
+  const formVenda = document.getElementById("form-venda");
 
-  fetch("http://127.0.0.1:8000/api/produtos")
-    .then(response => {
-      if (!response.ok) throw new Error("Erro ao buscar produtos");
-      return response.json();
-    })
-    .then(produtos => {
-      if (produtos.length === 0) {
-        container.innerHTML = "<p>Nenhum produto encontrado.</p>";
-        return;
-      }
+  async function carregarProdutos() {
+    try {
+      const res = await fetch("/api/produtos");
+      const produtos = await res.json();
 
       produtos.forEach(produto => {
         const card = document.createElement("div");
-        card.classList.add("produto-card");
+        card.className = "produto-card";
         card.innerHTML = `
           <h3>${produto.nome}</h3>
-          <p><strong>Preço:</strong> R$ ${produto.preco.toFixed(2)}</p>
-          <p><strong>Qtd:</strong> ${produto.quantidade}</p>
-          <p>${produto.descricao || "Sem descrição"}</p>
-          <button class="btn-comprar" data-id="${produto.id}">🛒 Comprar</button>
+          <p>Preço: R$ ${produto.preco.toFixed(2)}</p>
+          <p>Estoque: ${produto.quantidade}</p>
+          <button onclick="abrirModal(${produto.id})">Vender</button>
         `;
         container.appendChild(card);
       });
+    } catch (err) {
+      console.error("Erro ao carregar produtos:", err);
+    }
+  }
 
-      // Adiciona ação ao botão
-      const botoesComprar = document.querySelectorAll(".btn-comprar");
-      botoesComprar.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          const id = e.target.dataset.id;
-          const produtoSelecionado = produtos.find(p => p.id == id);
-          alert(`Produto "${produtoSelecionado.nome}" adicionado ao carrinho!`);
-          // Aqui a gente pode salvar no localStorage depois
-        });
+  window.abrirModal = (produtoId) => {
+    document.getElementById("produto_id").value = produtoId;
+    modal.classList.remove("hidden");
+  };
+
+  fecharModal.onclick = () => {
+    modal.classList.add("hidden");
+  };
+
+  formVenda.onsubmit = async (e) => {
+    e.preventDefault();
+
+    const dados = {
+      produto_id: parseInt(document.getElementById("produto_id").value),
+      quantidade_vendida: parseInt(document.getElementById("quantidade").value),
+      cliente_nome: document.getElementById("cliente_nome").value,
+      cliente_cpf: document.getElementById("cliente_cpf").value,
+      cliente_endereco: document.getElementById("cliente_endereco").value,
+      forma_pagamento: document.getElementById("forma_pagamento").value
+    };
+
+    try {
+      const res = await fetch("/api/vendas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
       });
-    })
-    .catch(error => {
-      container.innerHTML = `<p style="color:red;">Erro: ${error.message}</p>`;
-    });
+
+      if (res.ok) {
+        alert("✅ Venda realizada com sucesso!");
+        location.reload(); // atualiza estoque
+      } else {
+        const erro = await res.json();
+        alert("Erro: " + erro.detail);
+      }
+    } catch (err) {
+      console.error("Erro na venda:", err);
+      alert("Erro ao registrar a venda.");
+    }
+  };
+
+  carregarProdutos();
 });

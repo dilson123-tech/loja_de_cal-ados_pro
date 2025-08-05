@@ -2,7 +2,8 @@ from sqlalchemy import Column, Integer, String, Float, DateTime
 from datetime import datetime
 from app.database.session import Base
 
-class Produto(Base):
+class ProdutoModel(Base):
+
     __tablename__ = "produtos"
 
     id = Column(Integer, primary_key=True, index=True)
