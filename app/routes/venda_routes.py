@@ -33,12 +33,12 @@ def resumo_vendas(db: Session = Depends(get_db)):
 
 @router.post("/", response_model=VendaResponse, status_code=201)
 def criar_venda(venda: VendaCreate, db: Session = Depends(get_db)):
-    if not venda.produtos:
+    if not venda.itens:
         raise HTTPException(status_code=400, detail="Nenhum produto informado")
 
     total_calculado = 0
 
-    for item in venda.produtos:
+    for item in venda.itens:
         produto = db.query(Produto).filter(Produto.id == item.produto_id).first()
         if not produto:
             raise HTTPException(
@@ -48,12 +48,13 @@ def criar_venda(venda: VendaCreate, db: Session = Depends(get_db)):
         total_calculado += produto.preco * item.quantidade
 
     nova_venda = Venda(
-        cliente_nome=venda.cliente.nome,
-        cliente_cpf=venda.cliente.cpf,
-        cliente_endereco=venda.cliente.endereco,
-        forma_pagamento=venda.pagamento.forma,
-        valor_total=total_calculado
-    )
+    cliente_nome=venda.cliente.nome,
+    cliente_cpf=venda.cliente.cpf,
+    cliente_endereco=venda.cliente.endereco,
+    forma_pagamento=venda.pagamento.forma,
+    valor_total=total_calculado
+)
+
 
     db.add(nova_venda)
     db.commit()
@@ -61,13 +62,14 @@ def criar_venda(venda: VendaCreate, db: Session = Depends(get_db)):
 
     return VendaResponse(
         id=nova_venda.id,
-        produto_id=None,  # ← pode remover esse campo se não existir mais
-        quantidade=None,  # ← idem
+        produto_id=None,  # Se não usa mais, remova do schema
+        quantidade=None,  # Se não usa mais, remova do schema
         valor_total=nova_venda.valor_total,
         cliente_nome=nova_venda.cliente_nome,
         cliente_cpf=nova_venda.cliente_cpf,
         cliente_endereco=nova_venda.cliente_endereco,
         forma_pagamento=nova_venda.forma_pagamento,
         criado_em=nova_venda.criado_em,
-        produto_nome="Múltiplos produtos"  # ← coloca algo genérico se não usa 1 só
+        produto_nome="Múltiplos produtos"
     )
+

@@ -1,3 +1,7 @@
+// 🌍 Variáveis globais visíveis fora do DOMContentLoaded
+window.carrinho = [];
+window.vendaData = {};
+
 document.addEventListener("DOMContentLoaded", () => {
   const inputCodigo = document.getElementById("codigo-produto");
   const inputNome = document.getElementById("nome-produto");
@@ -7,9 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectPagamento = document.getElementById("forma-pagamento");
   const camposDiv = document.getElementById("campos-pagamento");
   const botaoFinalizar = document.getElementById("finalizar-venda");
-
-
-  let carrinho = [];
 
   // 🔍 Buscar produto
   async function buscarProduto() {
@@ -29,9 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const resposta = await fetch(url);
       if (!resposta.ok) throw new Error("Produto não encontrado");
+
       const produto = await resposta.json();
       console.log("🔎 Produto retornado:", produto);
 
+      produto.produto_id = produto.id; // ✅ obrigatório pro backend
 
       resultadoDiv.innerHTML = "";
 
@@ -49,23 +52,23 @@ document.addEventListener("DOMContentLoaded", () => {
       resultadoDiv.appendChild(nomeEl);
       resultadoDiv.appendChild(precoEl);
       resultadoDiv.appendChild(botao);
+
     } catch (erro) {
       resultadoDiv.innerHTML = "<p style='color:red;'>Produto não encontrado.</p>";
     }
   }
 
-  // ➕ Adicionar produto ao carrinho
+  // ➕ Adicionar ao carrinho
   function adicionarAoCarrinho(produto) {
-  carrinho.push({ 
-    ...produto, 
-    quantidade: 1,
-    produto_id: produto.id || produto.produto_id  // 👈 garante o ID pro backend
-  });
-  atualizarCarrinho();
-}
+    carrinho.push({
+      ...produto,
+      quantidade: 1,
+      produto_id: produto.id || produto.produto_id
+    });
+    atualizarCarrinho();
+  }
 
-
-  // 🧺 Atualizar carrinho visualmente
+  // 🧺 Atualiza a tabela visual
   function atualizarCarrinho() {
     carrinhoTabela.innerHTML = "";
     carrinho.forEach((item, index) => {
@@ -78,12 +81,11 @@ document.addEventListener("DOMContentLoaded", () => {
       carrinhoTabela.appendChild(linha);
     });
 
-    // Atualiza total
     const total = carrinho.reduce((soma, item) => soma + item.preco, 0);
     document.getElementById("total").innerText = total.toFixed(2);
   }
 
-  // ❌ Remover item do carrinho
+  // ❌ Remover item
   window.removerItem = function(index) {
     carrinho.splice(index, 1);
     atualizarCarrinho();
@@ -95,12 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     camposDiv.innerHTML = "";
 
     const totalSpan = document.getElementById("total");
-    let totalCompra = 0;
-
-    if (totalSpan) {
-      const totalTexto = totalSpan.innerText.replace(",", ".") || "0.00";
-      totalCompra = parseFloat(totalTexto);
-    }
+    let totalCompra = parseFloat(totalSpan.innerText.replace(",", ".") || "0.00");
 
     if (forma === "Cartão de Crédito") {
       let opcoes = "";
@@ -112,13 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
       camposDiv.innerHTML = `
         <label for="numero-cartao">Número do Cartão:</label>
         <input type="text" id="numero-cartao" required />
-
         <label for="validade">Validade:</label>
         <input type="text" id="validade" placeholder="MM/AA" required />
-
         <label for="cvv">CVV:</label>
         <input type="text" id="cvv" required />
-
         <label for="parcelas">Parcelas:</label>
         <select id="parcelas" required>${opcoes}</select>
       `;
@@ -126,10 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
       camposDiv.innerHTML = `
         <label for="numero-cartao">Número do Cartão:</label>
         <input type="text" id="numero-cartao" required />
-
         <label for="validade">Validade:</label>
         <input type="text" id="validade" placeholder="MM/AA" required />
-
         <label for="cvv">CVV:</label>
         <input type="text" id="cvv" required />
       `;
@@ -141,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 🎯 Buscar com Enter
+  // Enter para buscar
   inputCodigo.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -157,89 +149,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
   botaoBuscar.addEventListener("click", buscarProduto);
 
-  // ✅ Finalizar compra (dentro do DOMContentLoaded)
+  // ✅ Finalizar venda
   botaoFinalizar.addEventListener("click", async () => {
-  const nome = document.getElementById("nome").value.trim();
-  const cpf = document.getElementById("cpf").value.trim();
-  const endereco = document.getElementById("endereco").value.trim();
-  const formaPagamento = document.getElementById("forma-pagamento").value;
-  const total = parseFloat(document.getElementById("total").innerText.replace("R$", "").replace(",", "."));
+    const nome = document.getElementById("nome").value.trim();
+    const cpf = document.getElementById("cpf").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+    const formaPagamento = selectPagamento.value;
+    const total = parseFloat(document.getElementById("total").innerText.replace("R$", "").replace(",", "."));
 
-  if (!nome || !cpf || !endereco || carrinho.length === 0) {
-    alert("Preencha todos os dados do cliente e adicione produtos!");
-    return;
-  }
-
- const vendaData = {
-  cliente: {
-    nome: nome,
-    cpf: cpf,
-    endereco: endereco,
-  },
-  pagamento: {
-    forma: formaPagamento,
-    numero_cartao: document.getElementById("numero-cartao")?.value || "",
-    validade: document.getElementById("validade")?.value || "",
-    cvv: document.getElementById("cvv")?.value || "",
-  },
- produtos: carrinho.map(p => ({
-  produto_id: p.id || p.produto_id,
-  quantidade: p.quantidade
-})),
-  total: total
-};
- 
-
-  try {
-   console.log("🧺 Conteúdo do carrinho:", JSON.stringify(carrinho, null, 2));
-   console.log("📦 Enviando vendaData:", JSON.stringify(vendaData, null, 2));
-
-  const resposta = await fetch("/api/vendas", {
-     method: "POST",
-     headers: {
-       "Content-Type": "application/json",
-  },
-  body: JSON.stringify(vendaData),
-});
-
-
-    if (!resposta.ok) {
-     const erroDetalhado = await resposta.json();
-     throw new Error(JSON.stringify(erroDetalhado));
-
+    if (!nome || !cpf || !endereco || carrinho.length === 0) {
+      alert("Preencha todos os dados do cliente e adicione produtos!");
+      return;
     }
 
-    alert("✅ Venda registrada com sucesso!");
-    location.reload(); // limpa tudo
+    const vendaDataLocal = {
+      cliente: { nome, cpf, endereco },
+      pagamento: {
+        forma: formaPagamento,
+        numero_cartao: document.getElementById("numero-cartao")?.value || "",
+        validade: document.getElementById("validade")?.value || "",
+        cvv: document.getElementById("cvv")?.value || "",
+      },
+      itens: carrinho.map(p => ({
+        produto_id: p.produto_id || p.id,
+        quantidade: p.quantidade
+      })),
+      total
+    };
 
-} catch (erro) {
-  console.error("⛔ Erro ao registrar a venda:", erro);
+    window.vendaData = vendaDataLocal;
 
-  try {
-    // Verifica se é uma resposta do fetch (Response) e tenta extrair JSON
-    if (erro instanceof Response && erro.headers.get("content-type")?.includes("application/json")) {
-      const erroDetalhado = await erro.json();
-      if (Array.isArray(erroDetalhado.detail)) {
-        const mensagens = erroDetalhado.detail.map(e => `• ${e.msg}`).join("\n");
-        alert("❌ Erro ao registrar venda:\n" + mensagens);
-      } else {
-        alert("❌ Erro ao registrar venda:\n" + erroDetalhado.detail);
+    try {
+      console.log("🧺 Conteúdo do carrinho:", JSON.stringify(carrinho, null, 2));
+      console.log("📦 Enviando vendaData:", JSON.stringify(vendaDataLocal, null, 2));
+
+      const resposta = await fetch("/api/vendas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(vendaDataLocal),
+      });
+
+      if (!resposta.ok) {
+        const erroDetalhado = await resposta.json();
+        throw new Error(JSON.stringify(erroDetalhado));
       }
-    } else if (erro instanceof Error) {
-      alert("❌ Erro inesperado:\n" + erro.message);
-    } else {
-      alert("❌ Erro inesperado:\n" + JSON.stringify(erro, null, 2));
+
+      alert("✅ Venda registrada com sucesso!");
+      location.reload();
+
+    } catch (erro) {
+      console.error("⛔ Erro ao registrar a venda:", erro);
+      try {
+        const erroObj = JSON.parse(erro.message);
+        if (Array.isArray(erroObj.detail)) {
+          const mensagens = erroObj.detail.map(e => {
+            const campo = e.loc[e.loc.length - 1];
+            const traducoes = {
+              cliente_nome: "Nome do cliente",
+              cliente_cpf: "CPF",
+              cliente_endereco: "Endereço",
+              forma_pagamento: "Forma de pagamento",
+              itens: "Carrinho de produtos",
+              total: "Valor total da venda"
+            };
+            const nomeBonito = traducoes[campo] || campo;
+            return `❌ ${nomeBonito} é obrigatório!`;
+          }).join("\n");
+          alert("❌ Erro ao registrar venda:\n\n" + mensagens);
+        } else {
+          alert("❌ Erro inesperado:\n" + erro.message);
+        }
+      } catch (e) {
+        alert("❌ Falha ao processar o erro:\n" + (e.message || "Erro desconhecido"));
+      }
     }
-  } catch (e) {
-    alert("❌ Erro ao processar a falha:\n" + (e.message || "Erro desconhecido"));
-  }
-}
-
-
-
-
-
-});
-
+  });
 
 });

@@ -11,12 +11,15 @@ class ProdutoBase(BaseModel):
 class ProdutoCreate(ProdutoBase):
     pass
 
-class ProdutoOut(ProdutoBase):
+class ProdutoOut(BaseModel):
     id: int
-    criado_em: datetime
+    nome: str
+    descricao: str
+    preco: float
+    quantidade: int
 
     class Config:
-        from_attributes = True
+        from_attributes = True  # ✅ agora tá dentro da classe ProdutoOut
 
 class MensagemResponse(BaseModel):
     mensagem: str
