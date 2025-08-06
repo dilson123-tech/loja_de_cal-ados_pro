@@ -34,10 +34,10 @@ section {
 #tabela-produtos th {
   background-color: #007bff;
   color: white;
-}
+}nano frontend/css/estilo.css
 
 input, select, button {
-  padding: 8px;
+  padding:8px;
   margin: 5px 0;
   font-size: 14px;
 }
@@ -149,3 +149,78 @@ img {
   margin-bottom: 10px;
 }
 
+/* ✅ Mensagem de sucesso após venda */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 16px;
+  border-radius: 6px;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* ✅ Recibo da venda */
+.recibo-container {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.recibo-container h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+/* ✅ Botões padrão */
+.btn-finalizar, .btn-limpar {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-limpar {
+  background-color: #dc3545;
+}
+
+.btn-finalizar:hover {
+  background-color: #218838;
+}
+
+.btn-limpar:hover {
+  background-color: #c82333;
+}
+.resumo-dashboard {
+  background-color: #ffffff;
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin: 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+input, select, button {
+  width: 100%;
+  max-width: 600px; /* deixa larguinho mas com limite */
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 12px;
+}

@@ -76,16 +76,22 @@ def resumo_vendas(db: Session = Depends(get_db)):
         forma_mais_usada = Counter(formas_pagamento).most_common(1)
         forma_mais_usada = forma_mais_usada[0][0] if forma_mais_usada else None
 
-        # ✅ Aqui estava faltando
-        vendas_resumo = [
-            {
+        # ✅ Aqui: coletar nomes dos produtos por venda
+        vendas_resumo = []
+        for v in vendas:
+            nomes_produtos = []
+            for item in v.itens:
+                produto = db.query(ProdutoModel).filter(ProdutoModel.id == item.produto_id).first()
+                if produto:
+                    nomes_produtos.append(produto.nome)
+
+            vendas_resumo.append({
                 "cliente": v.cliente_nome,
-                "produto": "Múltiplos produtos",
+                "produto": ", ".join(nomes_produtos) if nomes_produtos else "Sem produto",
                 "valor": v.valor_total,
                 "forma_pagamento": v.forma_pagamento,
                 "data": v.criado_em.strftime("%d/%m/%Y %H:%M")
-            } for v in vendas
-        ]
+            })
 
         return {
             "total_vendas": float(total_arrecadado or 0),

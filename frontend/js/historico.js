@@ -5,43 +5,37 @@ document.addEventListener("DOMContentLoaded", async () => {
   let vendas = [];
 
   async function carregarHistorico() {
-    try {
-    const resposta = await fetch("/api/vendas");
+  try {
+    const resposta = await fetch("/api/vendas/resumo");
     const dados = await resposta.json();
-    console.log("🧪 É array?", Array.isArray(dados));
 
+    console.log("📦 Dados recebidos:", dados); // debug
 
-  console.log("📦 Dados recebidos:", dados); 
-  console.log("🔎 Tipo:", typeof dados);// debug
+    let vendas = [];
 
-  if (Array.isArray(dados)) {
-  vendas = dados;
-} else if (Array.isArray(dados.vendas)) {
-  vendas = dados.vendas;
-} else {
-  console.warn("⚠️ Nenhuma venda listada. Dados recebidos:", dados);
-  vendas = [];
+    if (Array.isArray(dados)) {
+      vendas = dados;
+    } else if (Array.isArray(dados.vendas)) {
+      vendas = dados.vendas;
+    } else {
+      console.warn("❌ Formato inesperado:", dados);
+    }
+
+    console.log("✅ Vendas final:", vendas); // Confirmação final
+
+    if (vendas.length === 0) {
+      tabelaBody.innerHTML = `<tr><td colspan="6">⚠️ Nenhuma venda registrada.</td></tr>`;
+      return;
+    }
+
+    exibirVendas(vendas);
+
+  } catch (error) {
+    console.error("Erro ao carregar histórico:", error);
+    tabelaBody.innerHTML = `<tr><td colspan="6">❌ Erro ao carregar histórico.</td></tr>`;
+  }
 }
 
-
-console.log("💡 Vendas final:", vendas); // 💥 Verifica se é array mesmo
-
-
-
-
-
-
-      if (vendas.length === 0) {
-        tabelaBody.innerHTML = "<tr><td colspan='6'>⚠️ Nenhuma venda registrada.</td></tr>";
-        return;
-      }
-
-      exibirVendas(vendas);
-    } catch (error) {
-      console.error("Erro ao carregar histórico:", error);
-      tabelaBody.innerHTML = "<tr><td colspan='6'>❌ Erro ao carregar histórico.</td></tr>";
-    }
-  }
 
 function exibirVendas(lista) {
   if (!Array.isArray(lista)) {

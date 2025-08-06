@@ -11,6 +11,18 @@
 <body>
   <h1>🧾 Painel de Vendas</h1>
   <section id="carrinho-produtos">
+<!-- 🔔 Recibo de Venda -->
+<div id="recibo-container" class="recibo-container" style="display: none;">
+  <div class="success-message" id="mensagem-venda">
+    ✅ Venda registrada com sucesso!
+  </div>
+  <p><strong>Cliente:</strong> <span id="recibo-cliente"></span></p>
+  <p><strong>Total:</strong> R$ <span id="recibo-total"></span></p>
+  <p><strong>Forma de Pagamento:</strong> <span id="recibo-pagamento"></span></p>
+
+  <button class="btn-limpar" onclick="novaVenda()">Nova Venda</button>
+</div>
+  
   <h2>🧺 Carrinho</h2>
   <table id="lista-carrinho">
     <thead>

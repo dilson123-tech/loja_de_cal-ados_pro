@@ -223,6 +223,31 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("❌ Falha ao processar o erro:\n" + (e.message || "Erro desconhecido"));
       }
     }
-  });
+  
+});
+    
+ 
 
+  // ✅ Agora sim: função global visível pro botão
+  window.novaVenda = function () {
+    document.querySelector("#nome").value = "";
+    document.querySelector("#cpf").value = "";
+    document.querySelector("#endereco").value = "";
+
+    // Campos do cartão (só se existirem na DOM)
+    const numero = document.querySelector("#numero-cartao");
+    const validade = document.querySelector("#validade");
+    const cvv = document.querySelector("#cvv");
+
+    if (numero) numero.value = "";
+    if (validade) validade.value = "";
+    if (cvv) cvv.value = "";
+
+    document.getElementById("recibo-container").style.display = "none";
+    document.getElementById("resultado-produto").innerHTML = "";
+
+    // Limpa carrinho
+    carrinho = [];
+    atualizarCarrinho();
+  };
 });
