@@ -1,0 +1,151 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+h1, h2 {
+  color: #222;
+  margin-bottom: 10px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+#lista-carrinho {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#lista-carrinho th,
+#lista-carrinho td,
+#tabela-produtos th,
+#tabela-produtos td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+#lista-carrinho th,
+#tabela-produtos th {
+  background-color: #007bff;
+  color: white;
+}
+
+input, select, button {
+  padding: 8px;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#resumo {
+  font-weight: bold;
+  font-size: 18px;
+  color: #2d3436;
+}
+
+#produtos-disponiveis,
+.venda {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#tabela-produtos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+img {
+  max-width: 60px;
+  height: auto;
+  display: block;
+  margin-top: 10px;
+}
+.bandeiras-cartao {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.bandeiras-cartao img {
+  max-width: 80px;
+  height: auto;
+}
+.forma-pagamento-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forma-pagamento-container input,
+.forma-pagamento-container select {
+  max-width: 300px;
+}
+.bandeiras-cartao {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+  margin-left: 0;
+}
+.forma-pagamento-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.bandeiras-cartao {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.bandeiras-cartao img {
+  height: 35px;
+  transition: transform 0.3s ease;
+}
+
+.bandeiras-cartao img:hover {
+  transform: scale(1.1);
+}
+
+.bandeiras-cartao.esquerda {
+  justify-content: flex-start;
+}
+.form-produto {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+#busca-produto {
+  max-width: 400px;
+}
+.form-cliente {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+

@@ -2,19 +2,43 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Geral de Vendas</title>
-  <link rel="stylesheet" href="/frontend/static/css/style.css" />
+  <title>📊 Dashboard Geral de Vendas</title>
+  <link rel="stylesheet" href="/static/css/estilo.css" />
+
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f3f3f3;
+    }
+    .destaque {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>📊 Dashboard Geral de Vendas</h1>
-
-  <p><strong>💰 Total de Vendas:</strong> R$ 2.399,70</p>
-  <p><strong>📦 Produtos Vendidos:</strong> 6</p>
-
-  <h3>💳 Forma de Pagamento Mais Usada: <strong>Cartão de Débito</strong></h3>
-
-  <table id="tabela-vendas">
+  <p><strong>Total de Vendas:</strong> R$ <span id="total-vendas"></span></p>
+  <p><strong>Produtos Vendidos:</strong> <span id="quantidade-total"></span></p>
+  <p><strong>Forma de Pagamento Mais Usada:</strong> <span id="pagamento-mais-usado"></span></p>
+  <table>
     <thead>
       <tr>
         <th>Cliente</th>
@@ -24,15 +48,56 @@
         <th>Data</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>João da Silva</td>
-        <td>Múltiplos produtos</td>
-        <td>R$ 399,98</td>
-        <td>Cartão de Crédito</td>
-        <td>05/08/2025 16:46</td>
-      </tr>
-    </tbody>
+    <tbody id="tabela-vendas"></tbody>
   </table>
+
+  <script>
+    async function carregarDashboard() {
+      try {
+        const resposta = await fetch('/api/vendas');
+        const vendas = await resposta.json();
+
+        let totalVendas = 0;
+        let totalProdutos = 0;
+        let formaPagamentoCount = {};
+
+        const tabela = document.getElementById('tabela-vendas');
+        tabela.innerHTML = '';
+
+        vendas.forEach(venda => {
+          totalVendas += venda.valor_total;
+          totalProdutos += venda.quantidade;
+
+          const forma = venda.forma_pagamento;
+          formaPagamentoCount[forma] = (formaPagamentoCount[forma] || 0) + 1;
+
+          const linha = `
+            <tr>
+              <td>${venda.cliente_nome}</td>
+              <td>${venda.quantidade > 1 ? 'Múltiplos produtos' : '1 produto'}</td>
+              <td class="destaque">R$ ${venda.valor_total.toFixed(2)}</td>
+              <td>${forma}</td>
+              <td>${new Date(venda.criado_em).toLocaleDateString()}</td>
+            </tr>
+          `;
+          tabela.innerHTML += linha;
+        });
+
+        document.getElementById('total-vendas').textContent = totalVendas.toFixed(2);
+        document.getElementById('produtos-vendidos').textContent = totalProdutos;
+
+        // Descobrir a forma mais usada
+        let maisUsada = Object.entries(formaPagamentoCount).sort((a, b) => b[1] - a[1])[0];
+        document.getElementById('pagamento-frequente').textContent = maisUsada ? maisUsada[0] : '---';
+
+      } catch (erro) {
+        alert('Erro ao carregar dashboard: ' + erro.message);
+        console.error(erro);
+      }
+    }
+
+    window.onload = carregarDashboard;
+  </script>
+<script src="/frontend/js/dashboard_v2.js?v=1"></script>
 </body>
 </html>

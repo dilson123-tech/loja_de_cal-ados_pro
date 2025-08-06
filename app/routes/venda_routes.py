@@ -69,7 +69,6 @@ def resumo_vendas(db: Session = Depends(get_db)):
     try:
         vendas = db.query(Venda).all()
 
-        # 💡 Resumo
         total_arrecadado = sum(v.valor_total for v in vendas)
         total_vendas = len(vendas)
 
@@ -77,17 +76,16 @@ def resumo_vendas(db: Session = Depends(get_db)):
         forma_mais_usada = Counter(formas_pagamento).most_common(1)
         forma_mais_usada = forma_mais_usada[0][0] if forma_mais_usada else None
 
-        # 💡 Vendas resumidas
+        # ✅ Aqui estava faltando
         vendas_resumo = [
-    {
-        "cliente": v.cliente_nome,
-        "produto": "Múltiplos produtos",
-        "valor": v.valor_total,
-        "forma_pagamento": v.forma_pagamento,
-        "data": v.criado_em.strftime("%d/%m/%Y %H:%M")
-    } for v in vendas
-]
-
+            {
+                "cliente": v.cliente_nome,
+                "produto": "Múltiplos produtos",
+                "valor": v.valor_total,
+                "forma_pagamento": v.forma_pagamento,
+                "data": v.criado_em.strftime("%d/%m/%Y %H:%M")
+            } for v in vendas
+        ]
 
         return {
             "total_vendas": float(total_arrecadado or 0),
@@ -124,4 +122,5 @@ def listar_historico(db: Session = Depends(get_db)):
                     produto_nome=produto.nome if produto else "Produto não encontrado"
                 )
             )
+            
     return resposta

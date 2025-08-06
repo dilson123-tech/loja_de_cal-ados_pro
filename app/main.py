@@ -5,6 +5,10 @@ from pathlib import Path
 from fastapi.responses import FileResponse
 import os
 
+# ⛔ Classe que remove cache dos arquivos estáticos
+class StaticFilesNoCache(StaticFiles):
+    def is_not_modified(self, *args, **kwargs) -> bool:
+        return False
 
 # ✅ IMPORTAÇÕES DO BANCO E MODELOS
 from app.database.session import engine, Base
@@ -21,25 +25,40 @@ app = FastAPI(
     description="API para gerenciamento de produtos da loja física",
     version="1.0.0"
 )
-# 🗂️ Monta a pasta de arquivos estáticos (HTML, CSS, JS, imagens etc)
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
-# ✅ ROTAS
+# ✅ ROTAS DE API
 from app.routes.produto_routes import router as produto_router
 from app.routes.venda_routes import router as venda_router
 
 app.include_router(produto_router, prefix="/api", tags=["Produtos"])
 app.include_router(venda_router, prefix="/api/vendas", tags=["Vendas"])
 
-# ✅ ROTA PRINCIPAL
-@app.get("/")
-def read_root():
-    return {"mensagem": "API da Loja de Calçados rodando com sucesso!"}
+# ✅ CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# 🖥️ Rota para abrir o dashboard pelo navegador
-@app.get("/dashboard.html")
-def abrir_dashboard():
+# ✅ FRONTEND SEM CACHE (pra CSS/JS sempre atualizar)
+app.mount("/frontend", StaticFilesNoCache(directory="frontend"), name="frontend")
+app.mount("/static", StaticFilesNoCache(directory="frontend"), name="static")
+
+# ✅ ROTAS PARA ABRIR OS HTML DIRETO
+@app.get("/")
+def home():
+    return FileResponse(os.path.join("frontend", "index.html"))
+
+@app.get("/dashboard")
+def dashboard():
     return FileResponse(os.path.join("frontend", "html", "dashboard.html"))
+
+
+@app.get("/vendas")
+def vendas():
+    return FileResponse(os.path.join("frontend", "venda.html"))
 
 
 

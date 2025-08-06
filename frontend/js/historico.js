@@ -6,10 +6,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function carregarHistorico() {
     try {
-      const resposta = await fetch("/api/vendas/resumo");
-      const dados = await resposta.json();
+    const resposta = await fetch("/api/vendas");
+    const dados = await resposta.json();
+    console.log("🧪 É array?", Array.isArray(dados));
 
-      vendas = dados.vendas || [];
+
+  console.log("📦 Dados recebidos:", dados); 
+  console.log("🔎 Tipo:", typeof dados);// debug
+
+  if (Array.isArray(dados)) {
+  vendas = dados;
+} else if (Array.isArray(dados.vendas)) {
+  vendas = dados.vendas;
+} else {
+  console.warn("⚠️ Nenhuma venda listada. Dados recebidos:", dados);
+  vendas = [];
+}
+
+
+console.log("💡 Vendas final:", vendas); // 💥 Verifica se é array mesmo
+
+
+
+
+
 
       if (vendas.length === 0) {
         tabelaBody.innerHTML = "<tr><td colspan='6'>⚠️ Nenhuma venda registrada.</td></tr>";
@@ -23,24 +43,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function exibirVendas(lista) {
-    tabelaBody.innerHTML = "";
-
-    lista.forEach((venda) => {
-      const linha = document.createElement("tr");
-
-      linha.innerHTML = `
-        <td>${venda.cliente_nome}</td>
-        <td>${venda.cliente_cpf}</td>
-        <td>${venda.produto_nome}</td>
-        <td>R$ ${venda.valor_total.toFixed(2)}</td>
-        <td>${venda.forma_pagamento}</td>
-        <td>${new Date(venda.criado_em).toLocaleString("pt-BR")}</td>
-      `;
-
-      tabelaBody.appendChild(linha);
-    });
+function exibirVendas(lista) {
+  if (!Array.isArray(lista)) {
+    console.error("❌ Lista de vendas inválida:", lista);
+    return;
   }
+
+  tabelaBody.innerHTML = "";
+
+  lista.forEach((venda) => {
+    const linha = document.createElement("tr");
+    linha.innerHTML = `
+      <td>${venda.cliente_nome}</td>
+      <td>${venda.cliente_cpf}</td>
+      <td>${venda.produto_nome}</td>
+      <td>R$ ${venda.valor_total.toFixed(2)}</td>
+      <td>${venda.forma_pagamento}</td>
+      <td>${new Date(venda.criado_em).toLocaleString("pt-BR")}</td>
+    `;
+    tabelaBody.appendChild(linha);
+  });
+}
+
 
   inputFiltro.addEventListener("input", () => {
     const termo = inputFiltro.value.toLowerCase();
