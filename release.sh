@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# === CONFIG ===
 REPO_DEV="$HOME/projetos/loja_calcados_pro"
 REPO_STABLE="$HOME/projetos/loja_calcados_pro_stable"
 BRANCH_DEV="develop"
@@ -16,40 +15,35 @@ fi
 echo "🔁 Iniciando release $VERSION ..."
 cd "$REPO_DEV"
 
-# 1) Checar árvore limpa
+# 1) árvore limpa no DEV
 if ! git diff --quiet || ! git diff --cached --quiet; then
-  echo "❌ Existem mudanças não commitadas no repo de DEV. Faça commit/stash e tente de novo."
+  echo "❌ Existem mudanças não commitadas no DEV."
   exit 1
 fi
 
-# 2) Atualizar referências
+# 2) Garantir DEV atualizado e no remoto
 git fetch origin
-
-# 3) Garantir DEV atualizado
 git checkout "$BRANCH_DEV"
 git pull origin "$BRANCH_DEV"
+git push origin "$BRANCH_DEV"
 
-# 4) Mergear no MAIN
+# 3) Merge acontece NA WORKTREE ESTÁVEL
+echo "�� Atualizando MAIN na worktree estável..."
+chmod -R u+w "$REPO_STABLE" || true
+cd "$REPO_STABLE"
+
+git fetch origin
 git checkout "$BRANCH_MAIN"
 git pull origin "$BRANCH_MAIN"
-git merge --no-ff "$BRANCH_DEV" -m "release: $VERSION"
+git merge --no-ff "origin/$BRANCH_DEV" -m "release: $VERSION"
 git push origin "$BRANCH_MAIN"
 
-# 5) Tag e push
+# 4) Tag e push
 git tag -a "$VERSION" -m "Release $VERSION"
 git push origin "$VERSION"
 
-# 6) Atualizar worktree estável
-echo "🔧 Atualizando worktree estável..."
-chmod -R u+w "$REPO_STABLE" || true
-cd "$REPO_STABLE"
-git fetch origin
-git checkout "$BRANCH_MAIN"
-git pull origin "$BRANCH_MAIN"
 cd -
-
-# 7) Travar novamente a pasta estável
 chmod -R a-w "$REPO_STABLE" || true
 
-echo "✅ Release $VERSION concluída com sucesso!"
+echo "✅ Release $VERSION concluída!"
 echo "📦 main atualizada, tag enviada e worktree estável sincronizada."
